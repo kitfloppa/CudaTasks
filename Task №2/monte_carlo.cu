@@ -3,15 +3,14 @@
 #include <curand_kernel.h>
 #include <cuda.h>
 #include <curand.h>
-#include <iostream>
-#include <numeric>
+#include <stdio.h>
 
 __global__ void monte_carlo(double *x, double *y, double *res, unsigned int n) {
     unsigned int tid = blockIdx.x * blockDim.x + threadIdx.x;
     if (tid >= n) return;
 
     if ((x[tid] * x[tid]) + (y[tid] * y[tid]) <= 1) res[tid] = 1;
-	else res[tid] = 0;
+    else res[tid] = 0;
 }
 
 int main() {
@@ -19,16 +18,16 @@ int main() {
     double *result = (double*)malloc(n * sizeof(double)); 
     double *x, *y, *mass_c, res = 0, pi = 0;
 
-	cudaMalloc(&x, n * sizeof(double));
-	cudaMalloc(&y, n * sizeof(double));
-	cudaMalloc(&mass_c, n * sizeof(double));
+    cudaMalloc(&x, n * sizeof(double));
+    cudaMalloc(&y, n * sizeof(double));
+    cudaMalloc(&mass_c, n * sizeof(double));
 
     curandGenerator_t ran;
-	curandCreateGenerator(&ran, CURAND_RNG_PSEUDO_DEFAULT);
-	curandSetPseudoRandomGeneratorSeed(ran, 1234ULL);
+    curandCreateGenerator(&ran, CURAND_RNG_PSEUDO_DEFAULT);
+    curandSetPseudoRandomGeneratorSeed(ran, 1234ULL);
 
     curandGenerateUniformDouble(ran, x, n);
-	curandGenerateUniformDouble(ran, y, n);
+    curandGenerateUniformDouble(ran, y, n);
 
     monte_carlo<<<numblocks, block>>>(x, y, mass_c, n);
     cudaMemcpy(result, mass_c, n * sizeof(double), cudaMemcpyDeviceToHost);
@@ -41,4 +40,4 @@ int main() {
     printf("Pi = %f", pi);
 
     return 0;
-}
+} // nvcc monte_carlo.cu -o monte_carlo -l curand

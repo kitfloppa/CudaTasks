@@ -38,4 +38,4 @@ int main() {
 	printf("Result = %f", result);
     
     return 0;
-}
+} // nvcc trapezoidal.cu -o trapezoidal
