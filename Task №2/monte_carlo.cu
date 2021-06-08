@@ -21,7 +21,7 @@ int main() {
 
 	cudaMalloc(&x, n * sizeof(double));
 	cudaMalloc(&y, n * sizeof(double));
-    cudaMalloc(&mass_c, n * sizeof(double));
+	cudaMalloc(&mass_c, n * sizeof(double));
 
     curandGenerator_t ran;
 	curandCreateGenerator(&ran, CURAND_RNG_PSEUDO_DEFAULT);
