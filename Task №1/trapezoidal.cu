@@ -34,6 +34,7 @@ int main() {
 	reduce<<<1, n>>>(mas_c);
 
 	cudaMemcpy(&result, mas_c, sizeof(double), cudaMemcpyDeviceToHost);
+	cudaFree(mas_c);
 	printf("Result = %f", result);
     
     return 0;
