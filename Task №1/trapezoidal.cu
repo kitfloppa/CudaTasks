@@ -28,7 +28,7 @@ int main() {
     double h = (b - a) / n, result = 0;
     double *mas_c;
 
-    cudaMalloc(&mas_c, n * sizeof(double));
+    cudaMalloc((void**)&mas_c, n * sizeof(double));
 	
 	trapezoidalIntegral<<<1, n>>>(mas_c, h, a);
 	reduce<<<1, n>>>(mas_c);

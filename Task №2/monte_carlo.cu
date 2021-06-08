@@ -18,13 +18,13 @@ int main() {
     double *result = (double*)malloc(n * sizeof(double)); 
     double *x, *y, *mass_c, res = 0, pi = 0;
 
-    cudaMalloc(&x, n * sizeof(double));
-    cudaMalloc(&y, n * sizeof(double));
-    cudaMalloc(&mass_c, n * sizeof(double));
+    cudaMalloc((void**)&x, n * sizeof(double));
+    cudaMalloc((void**)&y, n * sizeof(double));
+    cudaMalloc((void**)&mass_c, n * sizeof(double));
 
     curandGenerator_t ran;
     curandCreateGenerator(&ran, CURAND_RNG_PSEUDO_DEFAULT);
-    curandSetPseudoRandomGeneratorSeed(ran, 1234ULL);
+    curandSetPseudoRandomGeneratorSeed(ran, 1234ULL^time(NULL));
 
     curandGenerateUniformDouble(ran, x, n);
     curandGenerateUniformDouble(ran, y, n);
@@ -37,7 +37,7 @@ int main() {
     cudaFree(x);
     cudaFree(y);
     cudaFree(mass_c);
-    printf("Pi = %f", pi);
+    printf("PI = %f", pi);
 
     return 0;
 } // nvcc monte_carlo.cu -o monte_carlo -l curand
